@@ -1,18 +1,23 @@
-// Add Express
+require('dotenv').config();
+
 const express = require("express");
 
-// Initialize Express
+const audiences = require('./app/audiences')
+const users = require('./app/users')
+const database = require('./app/database')
+
 const app = express();
 
-// Create GET request
+app.use('/users', users)
+app.use('/database-connection', database)
+app.use('/audiences', audiences)
+
 app.get("/", (req, res) => {
-    res.send("PoapAds API!");
+    res.send("PoaPush!");
 });
 
-// Initialize server
 app.listen(5000, () => {
     console.log("Running on port 5000.");
 });
 
-// Export the Express API
 module.exports = app;

@@ -29,3 +29,4 @@ yarn-error.log*
 /react-shell-scripts
 /.idea
 .idea
+.env
