@@ -23,7 +23,7 @@ router.get('/check-volume', async (req, res) => {
 
     console.log(data)
 
-    const results = { volume: data.length }
+    const results = { volume: data ? data.length : 0 }
     res.json(results)
 })
 
