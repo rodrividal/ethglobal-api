@@ -19,11 +19,11 @@ router.get('/', (req, res) => {
 router.get('/check-volume', async (req, res) => {
     const q = req.query.q
     const keywords = q.split(';').map((x) => { return x.trim()})
-    const { data, error, count } = await database.poapsByKeyword(keywords[0])
+    const { data, error, count } = await database.poapsByKeyword(keywords)
 
     console.log(data)
 
-    const results = { volume: data ? data.length : 0 }
+    const results = { volume: data ? data.length : 0 , data: data}
     res.json(results)
 })
 

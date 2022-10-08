@@ -32,7 +32,7 @@ const getPoaps = async () => {
 const poapsByKeyword = async (keywords) => {
     const { data, error, count } = await supabase
         .from('poaps')
-        .select('id')
+        .select('id,description')
         .ilike('description', '%' + keywords[0] + '%');
 
     return { data, error, count };
