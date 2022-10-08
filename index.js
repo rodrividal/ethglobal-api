@@ -13,7 +13,13 @@ app.use('/database-connection', database)
 app.use('/audiences', audiences)
 
 app.get("/", (req, res) => {
-    res.send("PoaPush!");
+    const endpoints = [
+        {url: '/database-connection', description: "This is only to check supabase db connection"},
+        {url: '/audiences', description: "This returns the list of audiences or classifications"},
+        {url: '/audiences/id', description: "This returns the list of wallets that are part of that audience"},
+        {url: '/audiences/raw-data', description: "This returns the raw data of poaps that are the main data source to build our audiences"},
+    ]
+    res.send(endpoints);
 });
 
 app.listen(5000, () => {
