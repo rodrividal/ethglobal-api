@@ -23,8 +23,8 @@ router.get('/check-volume', async (req, res) => {
 
     console.log(data)
 
-    const results = { volume: 50 }
-    res.json(data)
+    const results = { volume: data.length }
+    res.json(results)
 })
 
 router.get('/{audienceId}', (req, res) => {
