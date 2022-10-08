@@ -29,13 +29,11 @@ const getPoaps = async () => {
     return { data, error, count };
 };
 
-const poapsByKeyword = async (keyword) => {
+const poapsByKeyword = async (keywords) => {
     const { data, error, count } = await supabase
         .from('poaps')
         .select('id')
-        .textSearch('description', keyword, {
-            config: 'english',
-        });
+        .ilike('description', '%' + keywords[0] + '%');
 
     return { data, error, count };
 };
