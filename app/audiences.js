@@ -9,12 +9,22 @@ router.use((req, res, next) => {
 })
 
 router.get('/', (req, res) => {
-    res.send('DRAFT: List of categories')
+    const categories = [
+        {id: 1, name: "Bitcoin", volume: 12009},
+        {id: 2, name: "Gaming", volume: 18020}
+    ]
+    res.json(categories)
 })
 
-router.get('/raw-data', async (req, res) => {
-    const { data, error } = await database.getPoaps()
-    res.send(data)
+router.get('/check-volume', async (req, res) => {
+    const q = req.query.q
+    const keywords = q.split(';').map((x) => { return x.trim()})
+    const { data, error, count } = await database.poapsByKeyword(keywords[0])
+
+    console.log(data)
+
+    const results = { volume: 50 }
+    res.json(data)
 })
 
 router.get('/{audienceId}', (req, res) => {

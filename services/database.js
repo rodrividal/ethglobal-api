@@ -1,35 +1,47 @@
 // import { createClient } from "@supabase/supabase-js";
-const createClient = require('@supabase/supabase-js').createClient
+const createClient = require('@supabase/supabase-js').createClient;
 
-const databaseUrl = process.env.SUPABASE_URL
-const databaseKey = process.env.SUPABASE_KEY
+const databaseUrl = process.env.SUPABASE_URL;
+const databaseKey = process.env.SUPABASE_KEY;
 
 const supabase = createClient(
     databaseUrl,
     databaseKey
-)
+);
 
 const test = async () => {
-    return "It works!"
+    return "It works!";
 };
 
 const signIn = async () => {
-    return null
+    return null;
 };
 
 const signUp = async () => {
-    return null
+    return null;
 };
 
 const getPoaps = async () => {
-    const { data, error } = await supabase
+    const { data, error, count } = await supabase
         .from('poaps')
         .select()
 
-    return { data, error }
+    return { data, error, count };
 };
 
-exports.test = test
-exports.signIn = signIn
-exports.signUp = signUp
-exports.getPoaps = getPoaps
+const poapsByKeyword = async (keyword) => {
+    const { data, error, count } = await supabase
+        .from('poaps')
+        .select('id')
+        .textSearch('description', keyword, {
+            config: 'english',
+        });
+
+    return { data, error, count };
+};
+
+exports.test = test;
+exports.signIn = signIn;
+exports.signUp = signUp;
+exports.getPoaps = getPoaps;
+exports.poapsByKeyword = poapsByKeyword;
