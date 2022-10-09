@@ -65,6 +65,7 @@ const poapsByKeyword = async (keywords) => {
 };
 
 const insertDataUnion = async (keyword, address) => {
+    keyword = keyword.toLowerCase()
     const { response, error } = await supabase
         .from('dataunions')
         .insert([
@@ -83,7 +84,7 @@ const getMessagesByKeywords = async (keywords) => {
     const { data, error, count } = await supabase
         .from('messages')
         .select()
-        .filter('keyword', 'in', '(' + keywords.toString() + ')')
+        .filter('keyword', 'in', '(' + keywords.toString().toLowerCase() + ')')
         .eq('verified', true)
 
     return { data, error, count };

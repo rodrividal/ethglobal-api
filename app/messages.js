@@ -79,17 +79,10 @@ router.post('/watch', async (req, res) => {
 })
 
 router.get('/test', async (req, res) => {
-    const { data, error} = await database.getDataUnion("sillas")
-    console.log(data)
 
-    const title = "title"
-    const description = "ad"
-    const image_url = 'asd'
-    const link = 'asd'
-    const keyword = 'dd'
+    const { data, error } = await database.getDataUnion("Environment")
 
-    const message = await database.insertMessage({ title, description, image_url, link, keyword });
-    console.log(message[0])
+    await DU.refreshRevenue(data.address)
 
     res.json(data);
 })
