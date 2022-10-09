@@ -10,6 +10,14 @@ router.use((req, res, next) => {
     next()
 })
 
+router.get('/', async (req, res) => {
+    const keyword = req.query.keyword;
+
+    const { data, error} = await getDataUnion(keyword)
+    
+    res.json(data)
+})
+
 router.post('/subscribe', async (req, res) => {
     const { address } = req.body;
     const categories = await interestsFromAddress(address)
