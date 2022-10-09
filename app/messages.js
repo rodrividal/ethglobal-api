@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
 
     const response = insertMessage({ title, description, image_url, link, keyword });
 
-    if(typeof response === "undefined") {
+    if (typeof response === "undefined") {
         res.status(500).json({ message: "error" });
         return;
     }
