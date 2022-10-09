@@ -1,0 +1,55 @@
+[{
+  "name": "Agro",
+  "keywords": ["agro"]
+}, {
+  "name": "Artistic",
+  "keywords": ["artistic"]
+}, {
+  "name": "Biotech",
+  "keywords": ["biotech"]
+}, {
+  "name": "Blockchain",
+  "keywords": ["blockchain"]
+}, {
+  "name": "Defi",
+  "keywords": ["defi"]
+}, {
+  "name": "Devcon",
+  "keywords": ["devcon"]
+}, {
+  "name": "Education",
+  "keywords": ["education"]
+}, {
+  "name": "Environment",
+  "keywords": ["climate"]
+}, {
+  "name": "ETHGlobal",
+  "keywords": ["ethglobal"]
+}, {
+  "name": "Finance",
+  "keywords": ["finance"]
+}, {
+  "name": "Humanity",
+  "keywords": ["humanity"]
+}, {
+  "name": "Legal",
+  "keywords": ["legal"]
+}, {
+  "name": "Marketing",
+  "keywords": ["marketing"]
+}, {
+  "name": "Metaverse",
+  "keywords": ["metaverse"]
+}, {
+  "name": "Sport",
+  "keywords": ["sport"]
+}, {
+  "name": "Video Games",
+  "keywords": ["gaming"]
+}, {
+  "name": "Wellness",
+  "keywords": ["wellness"]
+}, {
+  "name": "Women",
+  "keywords": ["women"]
+}]
