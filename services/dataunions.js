@@ -53,5 +53,19 @@ const addMember = async (DUContractAddress, newMemberAddress) => {
     }
 }
 
+const refreshRevenue = async (DUContractAddress) => {
+    const DU = new DataUnionClient({
+        auth: {
+            privateKey: PRIVATE_KEY,
+        },
+        chain: 'polygon',
+    });
+
+    const dataUnion = await DU.getDataUnion(DUContractAddress);
+    await dataUnion.refreshRevenue()
+    console.log("Revenue refreshed!")
+}
+
 exports.createDataUnion = createDataUnion;
 exports.addMember = addMember;
+exports.refreshRevenue = refreshRevenue;

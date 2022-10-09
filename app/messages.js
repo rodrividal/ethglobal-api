@@ -59,12 +59,11 @@ router.post('/', async (req, res) => {
 router.post('/verify', async (req, res) => {
     const { message_id } = req.body;
 
-    const response = await database.verifyMessage(message_id);
+    const message = await database.verifyMessage(message_id);
 
-    if (typeof response === "undefined") {
-        res.status(500).json({ message: "error" });
-        return;
-    }
+    const { data, error } = await database.getDataUnion(message.keyword)
+
+    await DU.refreshRevenue(data.address)
 
     res.status(200).json({ message: "ok" });
 })
