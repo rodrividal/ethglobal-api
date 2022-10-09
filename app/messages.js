@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     const { title, description, image_url, link, keyword } = req.body;
 
-    const categoryExists = database.categoryExists(keyword)
+    const categoryExists = await database.categoryExists(keyword)
 
     if (!categoryExists) {
         try {
