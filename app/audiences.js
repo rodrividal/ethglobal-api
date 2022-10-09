@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const https = require('https');
 const fetch = require('node-fetch');
 
 const database = require("../services/database");
@@ -48,11 +47,11 @@ const getHoldersCountOfEvents = async (events) => {
 
 }
 
-const getHoldersWalletOfEvent = async (id) => {
+const getHoldersWalletOfEvent = async (id, saveWallets) => {
     const query = `
     {
         tokens(
-            where: {event_in: "` + id + `", owner_not: "0x0000000000000000000000000000000000000000"},
+            where: {event: "` + id + `", owner_not: "0x0000000000000000000000000000000000000000"},
             first: 1000,
             skip: 0) {
                 id
@@ -63,18 +62,15 @@ const getHoldersWalletOfEvent = async (id) => {
                     tokensOwned
                 }
             },
-         
-         event(id: "` + id + `") {
-            tokenCount
-            transferCount
-        }
     }`
 
     const result = await queryPoapApi(query)
 
-    return result.data.tokens.map((x) => {
+    const wallets = result.data.tokens.map((x) => {
         return x.owner.id
     })
+
+    saveWallets(wallets)
 }
 
 const getHoldersWalletOfEvents = async (events) => {
@@ -100,20 +96,38 @@ const getHoldersWalletOfEvents = async (events) => {
 
     const result = await queryPoapApi(query)
 
-    return result.data.tokens.map((x) => {
+    const wallets = result.data.tokens.map((x) => {
         return x.owner.id
     })
+
+    return [...new Set(wallets)];
 }
 
-const getHoldersWalletOfEventsOld = async (events) => {
-    let wallets = []
+const getHoldersWalletOfEventsAsync = async (events) => {
+    let collectedWallets = []
+    let sourcesOfCollection = events.length
+    let counterOfProcessedSources = 0
+
+    const saveWallets = (addresses) => {
+        for (let i = 0; i < addresses.length; i++) {
+            collectedWallets.push(addresses[i])
+        }
+        counterOfProcessedSources += 1
+    }
+
     for (let i = 0; i < events.length; i++) {
         let event = events[i]
-        let holders = await getHoldersWalletOfEvent(event.id)
-        console.log(holders)
-        wallets = wallets.concat(holders)
+        getHoldersWalletOfEvent(event.id, saveWallets)
     }
-    return wallets
+
+    while (true) {
+        await new Promise(r => setTimeout(r, 1000));
+        if (counterOfProcessedSources === sourcesOfCollection) {
+            break
+        }
+    }
+
+    return [...new Set(collectedWallets)];
 }
 
 router.get('/check-volume', async (req, res) => {
@@ -121,16 +135,15 @@ router.get('/check-volume', async (req, res) => {
     const keywords = q.split(';').map((x) => { return x.trim()})
     const { data, error, count } = await database.poapsByKeyword(keywords)
 
-    const volume = await getHoldersCountOfEvents(data)
-    const wallets = await getHoldersWalletOfEvents(data)
+    const wallets = await getHoldersWalletOfEventsAsync(data)
 
     console.log("Volume for keywords:")
-    console.log(volume)
+    console.log(wallets.length)
 
     console.log("Segmented wallets:")
     console.log(wallets)
 
-    const results = { volume: volume, wallets: wallets}
+    const results = { events: data.length, volume: wallets.length, wallets: wallets}
     res.json(results)
 })
 
