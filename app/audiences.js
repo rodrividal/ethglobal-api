@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 
 const queryPoapApi = async (query, variables = {}) => {
     async function fetchWithTimeout(resource, options = {}) {
-        const { timeout = 3000 } = options;
+        const { timeout = 5000 } = options;
 
         const controller = new AbortController();
         const id = setTimeout(() => controller.abort(), timeout);
