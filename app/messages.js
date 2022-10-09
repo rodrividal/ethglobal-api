@@ -42,10 +42,10 @@ router.post('/', async (req, res) => {
 
     const message = await database.insertMessage({ title, description, image_url, link, keyword });
 
-    const du = await database.getDataUnion(keyword)
+    const { data, error} = await database.getDataUnion(keyword)
 
     const response = {
-        address: du.address,
+        address: data.address,
         message_id: message.id
     }
 
