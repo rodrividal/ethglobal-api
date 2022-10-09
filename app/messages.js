@@ -40,11 +40,11 @@ router.post('/', async (req, res) => {
         }
     }
 
-    await database.insertMessage({ title, description, image_url, link, keyword });
+    const message = await database.insertMessage({ title, description, image_url, link, keyword });
 
     const du = await database.getDataUnion(keyword)
 
-    res.json(du);
+    res.json({du, message});
 })
 
 router.post('/verify', async (req, res) => {
