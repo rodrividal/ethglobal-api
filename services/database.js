@@ -53,9 +53,25 @@ const insertDataUnion = async (keyword, address) => {
     return response
 }
 
+const insertMessage = async (message) => {
+    const { response, error } = await supabase
+        .from('messages')
+        .insert([
+            message,
+        ]);
+
+    if (error) {
+        console.log(error)
+        return false
+    }
+
+    return response
+}
+
 exports.test = test;
 exports.signIn = signIn;
 exports.signUp = signUp;
 exports.getPoaps = getPoaps;
 exports.poapsByKeyword = poapsByKeyword;
 exports.insertDataUnion = insertDataUnion;
+exports.insertMessage = insertMessage;
