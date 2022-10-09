@@ -105,7 +105,7 @@ const watchedAdExists = async (address, message_id) => {
 }
 
 const insertWatchedAd = async (data) => {
-    if (!await watchedAdExists) {
+    if (!await watchedAdExists()) {
         const { response, error } = await supabase
             .from('watched_ads')
             .insert([
