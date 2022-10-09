@@ -38,8 +38,24 @@ const poapsByKeyword = async (keywords) => {
     return { data, error, count };
 };
 
+const insertDataUnion = async (keyword, address) => {
+    const { response, error } = await supabase
+        .from('dataunions')
+        .insert([
+            { keyword, address },
+        ]);
+
+    if (error) {
+        console.log(error)
+        return false
+    }
+
+    return response
+}
+
 exports.test = test;
 exports.signIn = signIn;
 exports.signUp = signUp;
 exports.getPoaps = getPoaps;
 exports.poapsByKeyword = poapsByKeyword;
+exports.insertDataUnion = insertDataUnion;

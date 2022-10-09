@@ -2,6 +2,10 @@ require('dotenv').config();
 
 const init = async () => {
     const DU = require("./services/dataunions");
+    const database = require("./services/database");
+
+    database.insertDataUnion('test', 'adsononf3n2dx0x0x0x0x00x')
+    return false
 
     const categories = require("./predefined-categories.json")
 
@@ -18,7 +22,7 @@ const init = async () => {
     console.log(dataUnions)
 
     console.log("Saving data unions in our off chain database")
-    
+
 }
 
 init()
