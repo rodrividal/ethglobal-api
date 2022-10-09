@@ -1,12 +1,15 @@
 require('dotenv').config();
 
 const express = require("express");
+const cors = require('cors')
 
 const audiences = require('./app/audiences');
 const users = require('./app/users');
 const database = require('./app/database');
 
 const app = express();
+
+app.use(cors())
 
 app.use('/users', users);
 app.use('/database-connection', database);
