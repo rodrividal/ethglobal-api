@@ -46,7 +46,7 @@ router.post('/', async (req, res) => {
 
     const response = {
         address: data.address,
-        message_id: message.id
+        message_id: message[0].id
     }
 
     res.json(response);
@@ -91,7 +91,7 @@ router.get('/test', async (req, res) => {
     const keyword = 'dd'
 
     const message = await database.insertMessage({ title, description, image_url, link, keyword });
-    console.log(message)
+    console.log(message[0])
 
     res.json(data);
 })
