@@ -37,14 +37,14 @@ const getCategories = async () => {
 };
 
 const getDataUnion = async (keyword) => {
-    const { data, error, count } = await supabase
+    const { data, error } = await supabase
         .from('dataunions')
         .select()
         .eq('keyword', keyword)
         .limit(1)
         .single()
 
-    return { data, error, count };
+    return { data, error };
 };
 
 const categoryExists = async (keyword) => {

@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
 
     const du = await database.getDataUnion(keyword)
 
-    res.status(200).json({ du_address: du.getAddress() });
+    res.status(200).json({ du_address: du.address });
 })
 
 router.post('/verify', async (req, res) => {
@@ -71,6 +71,11 @@ router.post('/watch', async (req, res) => {
     }
 
     res.status(200).json(data[0]);
+})
+
+router.get('/test', async (req, res) => {
+    const du = await database.getDataUnion("papas")
+    res.status(200).json(du);
 })
 
 module.exports = router
