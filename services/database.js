@@ -169,3 +169,4 @@ exports.insertDataUnion = insertDataUnion;
 exports.insertMessage = insertMessage;
 exports.insertWatchedAd = insertWatchedAd;
 exports.categoryExists = categoryExists;
+exports.watchedAdExists = watchedAdExists;
