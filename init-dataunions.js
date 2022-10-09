@@ -4,9 +4,6 @@ const init = async () => {
     const DU = require("./services/dataunions");
     const database = require("./services/database");
 
-    database.insertDataUnion('test', 'adsononf3n2dx0x0x0x0x00x')
-    return false
-
     const categories = require("./predefined-categories.json")
 
     console.log("Initializing data unions for each category")
@@ -15,7 +12,7 @@ const init = async () => {
 
     for (let i = 0; i < categories.length; i++) {
         let du = await DU.createDataUnion(categories[i].name, "This is the data union for the following category: " + categories[i].name)
-        dataUnions.push({category: categories[i].name, du_address: du.getAddress()})
+        dataUnions.push({keyword: categories[i].name, address: du.getAddress()})
     }
 
     console.log("These are my data unions:")
@@ -23,6 +20,11 @@ const init = async () => {
 
     console.log("Saving data unions in our off chain database")
 
+    for (let i = 0; i < dataUnions.length; i++) {
+        await database.insertDataUnion(dataUnions[i].keyword, dataUnions[i].address)
+    }
+
+    console.log("All set!")
 }
 
 init()
