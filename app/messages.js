@@ -76,11 +76,6 @@ router.post('/watch', async (req, res) => {
 
     const { data, error } = await database.getMessageById(message_id)
 
-    if (typeof response === "undefined") {
-        res.status(500).json({ message: "error" });
-        return;
-    }
-
     res.status(200).json(data[0]);
 })
 
