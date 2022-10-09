@@ -44,7 +44,12 @@ router.post('/', async (req, res) => {
 
     const du = await database.getDataUnion(keyword)
 
-    res.json({du, message});
+    const response = {
+        address: du.address,
+        message_id: message.id
+    }
+
+    res.json(response);
 })
 
 router.post('/verify', async (req, res) => {
