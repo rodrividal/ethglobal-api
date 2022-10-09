@@ -31,4 +31,27 @@ const createDataUnion = async (name, description = "") => {
     return dataUnion
 }
 
+const addMember = async (DUContractAddress, newMemberAddress) => {
+    const DU = new DataUnionClient({
+        auth: {
+            privateKey: PRIVATE_KEY,
+        },
+        chain: 'polygon',
+    });
+
+    const dataUnion = await DU.getDataUnion(DUContractAddress);
+
+    const isMember = await dataUnion.isMember(newMemberAddress)
+
+    if (!isMember) {
+        const tx = await dataUnion.addMembers([newMemberAddress]);
+        console.log("Member added!")
+        console.log("Data union:", await dataUnion.getActiveMemberCount())
+    } else {
+        console.log("Member already exists in dataUnion!")
+        console.log("Data union:", await dataUnion.getActiveMemberCount())
+    }
+}
+
 exports.createDataUnion = createDataUnion;
+exports.addMember = addMember;

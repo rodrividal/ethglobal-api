@@ -1,6 +1,6 @@
 const express = require('express')
 const database = require("../services/database");
-const {interestsFromAddress} = require("../services/poap_api");
+const { interestsFromAddress } = require("../services/poap_api");
 const router = express.Router()
 
 router.use((req, res, next) => {

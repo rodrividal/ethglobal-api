@@ -15,7 +15,7 @@ router.get('/subscribe', async (req, res) => {
     const categories = await interestsFromAddress(address)
 
     for (let i = 0; i < categories.length; i++) {
-
+        await DU.addMember(categories[i].address, address)
     }
 
     res.json(categories)

@@ -27,7 +27,8 @@ app.get("/", (req, res) => {
         {url: '/database-connection', description: "This is only to check supabase db connection"},
         {url: '/audiences', description: "This returns the list of audiences or classifications"},
         {url: '/audiences/check-volume', description: "This returns the size of the specific keywords"},
-        {url: '/campaigns/create', description: "This is the endpoint to create a new campaign"},
+        {url: '/messages/', description: "This is the endpoint to receive messages from address"},
+        {url: '/messages/', description: "This is the endpoint to receive messages from address"},
     ]
     res.send(endpoints);
 });
