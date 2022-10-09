@@ -85,13 +85,18 @@ const getHoldersWalletOfEvents = async (events) => {
     return [...new Set(wallets)];
 }
 
-const getHoldersWalletOfEvent = async (id, saveWallets) => {
+const getHoldersWalletOfEvent = async (id, saveWallets, retries = 0) => {
+    if (retries >= 2) {
+        saveWallets([])
+        return false
+    }
+
     try {
         const query = `
     {
         tokens(
             where: {event: "` + id + `", owner_not: "0x0000000000000000000000000000000000000000"},
-            first: 10,
+            first: 1000,
             skip: 0) {
                 id
                 transferCount
@@ -110,10 +115,11 @@ const getHoldersWalletOfEvent = async (id, saveWallets) => {
         })
 
         saveWallets(wallets)
+
     } catch (e) {
         console.log('Retrying')
         await new Promise(r => setTimeout(r, 500));
-        getHoldersWalletOfEvent(id, saveWallets)
+        getHoldersWalletOfEvent(id, saveWallets, retries + 1)
     }
 }
 
