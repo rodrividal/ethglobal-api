@@ -140,7 +140,7 @@ router.get('/check-volume', async (req, res) => {
     console.log("Segmented wallets:")
     console.log(wallets)
 
-    const results = { events: data.length, volume: wallets.length, wallets: wallets}
+    const results = { volume: wallets.length}
     res.json(results)
 })
 
