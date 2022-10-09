@@ -61,10 +61,11 @@ const insertDataUnion = async (keyword, address) => {
     return response
 }
 
-const getMessages = async () => {
+const getMessagesByKeywords = async (keywords) => {
     const { data, error, count } = await supabase
         .from('messages')
         .select()
+        .filter('keyword', 'in', '(' + keywords.toString() + ')')
 
     return { data, error, count };
 };
@@ -90,6 +91,6 @@ exports.signUp = signUp;
 exports.getPoaps = getPoaps;
 exports.getCategories = getCategories;
 exports.poapsByKeyword = poapsByKeyword;
-exports.getMessages = getMessages;
+exports.getMessagesByKeywords = getMessagesByKeywords;
 exports.insertDataUnion = insertDataUnion;
 exports.insertMessage = insertMessage;

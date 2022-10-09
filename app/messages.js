@@ -1,5 +1,6 @@
 const express = require('express')
 const database = require("../services/database");
+const {interestsFromAddress} = require("../services/poap_api");
 const router = express.Router()
 
 router.use((req, res, next) => {
@@ -8,7 +9,16 @@ router.use((req, res, next) => {
 })
 
 router.get('/', async (req, res) => {
-    const { data, error, count } = await database.getMessages()
+    const address = req.query.address;
+
+    const categories = await interestsFromAddress(address)
+
+    const keywords = categories.map(x => {
+        return x.keyword.toLowerCase()
+    })
+
+    const { data, error, count } = await database.getMessagesByKeywords(keywords)
+
     res.json(data)
 })
 
