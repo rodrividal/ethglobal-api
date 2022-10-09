@@ -37,4 +37,17 @@ router.post('/', async (req, res) => {
     res.status(200).json({ message: "ok" });
 })
 
+router.post('/watch', async (req, res) => {
+    const { address, message_id } = req.body;
+
+    const response = database.insertWatchedAd({ address, message_id });
+
+    if (typeof response === "undefined") {
+        res.status(500).json({ message: "error" });
+        return;
+    }
+
+    res.status(200).json({ message: "ok" });
+})
+
 module.exports = router

@@ -85,6 +85,21 @@ const insertMessage = async (message) => {
     return response
 }
 
+const insertWatchedAd = async (data) => {
+    const { response, error } = await supabase
+        .from('watched_ads')
+        .insert([
+            data,
+        ]);
+
+    if (error) {
+        console.log(error)
+        return false
+    }
+
+    return response
+}
+
 exports.test = test;
 exports.signIn = signIn;
 exports.signUp = signUp;
@@ -94,3 +109,4 @@ exports.poapsByKeyword = poapsByKeyword;
 exports.getMessagesByKeywords = getMessagesByKeywords;
 exports.insertDataUnion = insertDataUnion;
 exports.insertMessage = insertMessage;
+exports.insertWatchedAd = insertWatchedAd;
