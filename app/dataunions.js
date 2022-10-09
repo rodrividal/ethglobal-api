@@ -10,8 +10,8 @@ router.use((req, res, next) => {
     next()
 })
 
-router.get('/subscribe', async (req, res) => {
-    const address = req.query.address;
+router.post('/subscribe', async (req, res) => {
+    const { address } = req.body;
     const categories = await interestsFromAddress(address)
 
     for (let i = 0; i < categories.length; i++) {
