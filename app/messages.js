@@ -24,6 +24,8 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
+    req.setTimeout(500000);
+
     const { title, description, image_url, link, keyword } = req.body;
 
     const categoryExists = await database.categoryExists(keyword)
