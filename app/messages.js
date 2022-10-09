@@ -20,8 +20,8 @@ router.get('/', async (req, res) => {
 
     const { data, error, count } = await database.getMessagesByKeywords(keywords)
 
-    const results = data.map(x => {
-        x.seen = database.watchedAdExists(address, x.id)
+    const results = data.map(async x => {
+        x.seen = await database.watchedAdExists(address, x.id)
         return x
     })
 
