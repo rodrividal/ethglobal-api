@@ -15,12 +15,23 @@ router.get('/', async (req, res) => {
 })
 
 const queryPoapApi = async (query, variables = {}) => {
-    const result = await fetch('https://api.thegraph.com/subgraphs/name/poap-xyz/poap-xdai', {
+    async function fetchWithTimeout(resource, options = {}) {
+        const { timeout = 3000 } = options;
+
+        const controller = new AbortController();
+        const id = setTimeout(() => controller.abort(), timeout);
+        const response = await fetch(resource, {
+            ...options,
+            signal: controller.signal
+        }).then(res => res.json()).then(json => {return json}).catch(e => console.log(e));
+        clearTimeout(id);
+        return response;
+    }
+
+    return await fetchWithTimeout('https://api.thegraph.com/subgraphs/name/poap-xyz/poap-xdai', {
         method: 'post',
         body: JSON.stringify({query, variables})
-    }).then(res => res.json()).then(json => {return json}).catch(e => console.log(e))
-
-    return result
+    })
 }
 
 const getHoldersCountOfEvents = async (events) => {
@@ -42,32 +53,6 @@ const getHoldersCountOfEvents = async (events) => {
         return accumulator + parseInt(x.tokenCount)
     }, 0)
 
-}
-
-const getHoldersWalletOfEvent = async (id, saveWallets) => {
-    const query = `
-    {
-        tokens(
-            where: {event: "` + id + `", owner_not: "0x0000000000000000000000000000000000000000"},
-            first: 1000,
-            skip: 0) {
-                id
-                transferCount
-                created
-                owner {
-                    id
-                    tokensOwned
-                }
-            },
-    }`
-
-    const result = await queryPoapApi(query)
-
-    const wallets = result.data.tokens.map((x) => {
-        return x.owner.id
-    })
-
-    saveWallets(wallets)
 }
 
 const getHoldersWalletOfEvents = async (events) => {
@@ -100,6 +85,38 @@ const getHoldersWalletOfEvents = async (events) => {
     return [...new Set(wallets)];
 }
 
+const getHoldersWalletOfEvent = async (id, saveWallets) => {
+    try {
+        const query = `
+    {
+        tokens(
+            where: {event: "` + id + `", owner_not: "0x0000000000000000000000000000000000000000"},
+            first: 10,
+            skip: 0) {
+                id
+                transferCount
+                created
+                owner {
+                    id
+                    tokensOwned
+                }
+            },
+    }`
+
+        const result = await queryPoapApi(query)
+
+        const wallets = result.data.tokens.map((x) => {
+            return x.owner.id
+        })
+
+        saveWallets(wallets)
+    } catch (e) {
+        console.log('Retrying')
+        await new Promise(r => setTimeout(r, 500));
+        getHoldersWalletOfEvent(id, saveWallets)
+    }
+}
+
 const getHoldersWalletOfEventsAsync = async (events) => {
     let collectedWallets = []
     let sourcesOfCollection = events.length
@@ -110,6 +127,9 @@ const getHoldersWalletOfEventsAsync = async (events) => {
             collectedWallets.push(addresses[i])
         }
         counterOfProcessedSources += 1
+        console.log("Total: ", sourcesOfCollection)
+        console.log("Current: ", counterOfProcessedSources)
+        console.log("Pending: ", sourcesOfCollection - counterOfProcessedSources)
     }
 
     for (let i = 0; i < events.length; i++) {
@@ -131,6 +151,9 @@ router.get('/check-volume', async (req, res) => {
     const q = req.query.q
     const keywords = q.split(';').map((x) => { return x.trim()})
     const { data, error, count } = await database.poapsByKeyword(keywords)
+
+    console.log("Quantity of events:")
+    console.log(data.length)
 
     const wallets = await getHoldersWalletOfEventsAsync(data)
 
