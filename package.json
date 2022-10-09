@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/rodrividal/ethglobal-api#readme",
   "dependencies": {
+    "@dataunions/client": "^3.0.5",
     "@supabase/supabase-js": "^1.35.7",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
