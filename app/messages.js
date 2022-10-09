@@ -31,7 +31,7 @@ router.post('/', async (req, res) => {
     if (!categoryExists) {
         try {
             let du = await DU.createDataUnion(keyword, "This is the data union for the following category: " + keyword)
-            await database.insertDataUnion(du.keyword, du.address)
+            await database.insertDataUnion(keyword, du.getAddress())
         } catch (e) {
             res.status(500).json({ message: JSON.stringify(e) });
             return;
