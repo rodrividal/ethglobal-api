@@ -37,10 +37,6 @@ const getCategories = async () => {
     return { data, error, count };
 };
 
-const categoryExists = async () => {
-
-}
-
 const poapsByKeyword = async (keywords) => {
     const { data, error, count } = await supabase
         .from('poaps')
@@ -75,12 +71,12 @@ const getMessagesByKeywords = async (keywords) => {
 };
 
 const getMessageById = async (id) => {
-    const { data, error, count } = await supabase
+    const { data, error } = await supabase
         .from('messages')
         .select()
         .eq('id', id)
 
-    return { data, error, count };
+    return { data, error };
 };
 
 const insertMessage = async (message) => {
@@ -98,19 +94,32 @@ const insertMessage = async (message) => {
     return response
 }
 
-const insertWatchedAd = async (data) => {
-    const { response, error } = await supabase
+const watchedAdExists = async (address, message_id) => {
+    const { data, error, count } = await supabase
         .from('watched_ads')
-        .insert([
-            data,
-        ]);
+        .select()
+        .eq('message_id', message_id)
+        .eq('address', address)
 
-    if (error) {
-        console.log(error)
-        return false
+    return data.length > 0
+}
+
+const insertWatchedAd = async (data) => {
+    if (!watchedAdExists) {
+        const { response, error } = await supabase
+            .from('watched_ads')
+            .insert([
+                data,
+            ]);
+
+        if (error) {
+            console.log(error)
+            return false
+        }
+
+        return response
     }
-
-    return response
+    return true
 }
 
 exports.test = test;
