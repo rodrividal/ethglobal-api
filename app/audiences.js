@@ -9,12 +9,9 @@ router.use((req, res, next) => {
     next()
 })
 
-router.get('/', (req, res) => {
-    const categories = [
-        {id: 1, name: "Bitcoin", volume: 12009},
-        {id: 2, name: "Gaming", volume: 18020}
-    ]
-    res.json(categories)
+router.get('/', async (req, res) => {
+    const { data, error, count } = await database.getCategories()
+    res.json(data)
 })
 
 const queryPoapApi = async (query, variables = {}) => {

@@ -29,6 +29,14 @@ const getPoaps = async () => {
     return { data, error, count };
 };
 
+const getCategories = async () => {
+    const { data, error, count } = await supabase
+        .from('dataunions')
+        .select()
+
+    return { data, error, count };
+};
+
 const poapsByKeyword = async (keywords) => {
     const { data, error, count } = await supabase
         .from('poaps')
@@ -72,6 +80,7 @@ exports.test = test;
 exports.signIn = signIn;
 exports.signUp = signUp;
 exports.getPoaps = getPoaps;
+exports.getCategories = getCategories;
 exports.poapsByKeyword = poapsByKeyword;
 exports.insertDataUnion = insertDataUnion;
 exports.insertMessage = insertMessage;
