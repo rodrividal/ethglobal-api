@@ -5,6 +5,7 @@ const cors = require('cors')
 
 const audiences = require('./app/audiences');
 const messages = require('./app/messages');
+const dataunions = require('./app/dataunions');
 const users = require('./app/users');
 const database = require('./app/database');
 const bodyParser = require('body-parser');
@@ -19,6 +20,7 @@ app.use('/users', users);
 app.use('/database-connection', database);
 app.use('/audiences', audiences);
 app.use('/messages', messages);
+app.use('/dataunions', dataunions);
 
 app.get("/", (req, res) => {
     const endpoints = [

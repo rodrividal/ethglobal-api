@@ -1,5 +1,5 @@
 const express = require('express')
-const { insertMessage } = require('../services/database')
+const database = require("../services/database");
 const router = express.Router()
 
 router.use((req, res, next) => {
@@ -7,12 +7,17 @@ router.use((req, res, next) => {
     next()
 })
 
+router.get('/', async (req, res) => {
+    const { data, error, count } = await database.getMessages()
+    res.json(data)
+})
+
 router.post('/', async (req, res) => {
     const { title, description, image_url, link, keyword } = req.body;
 
     console.log(title, description, image_url, link, keyword);
 
-    const response = insertMessage({ title, description, image_url, link, keyword });
+    const response = database.insertMessage({ title, description, image_url, link, keyword });
 
     if (typeof response === "undefined") {
         res.status(500).json({ message: "error" });

@@ -3,6 +3,7 @@ const router = express.Router()
 const fetch = require('node-fetch');
 
 const database = require("../services/database");
+const poapAPI = require("../services/poap_api")
 
 router.use((req, res, next) => {
     console.log('Time: ', Date.now())
@@ -13,26 +14,6 @@ router.get('/', async (req, res) => {
     const { data, error, count } = await database.getCategories()
     res.json(data)
 })
-
-const queryPoapApi = async (query, variables = {}) => {
-    async function fetchWithTimeout(resource, options = {}) {
-        const { timeout = 5000 } = options;
-
-        const controller = new AbortController();
-        const id = setTimeout(() => controller.abort(), timeout);
-        const response = await fetch(resource, {
-            ...options,
-            signal: controller.signal
-        }).then(res => res.json()).then(json => {return json}).catch(e => console.log(e));
-        clearTimeout(id);
-        return response;
-    }
-
-    return await fetchWithTimeout('https://api.thegraph.com/subgraphs/name/poap-xyz/poap-xdai', {
-        method: 'post',
-        body: JSON.stringify({query, variables})
-    })
-}
 
 const getHoldersCountOfEvents = async (events) => {
     const ids = events.map(x => {
@@ -47,7 +28,7 @@ const getHoldersCountOfEvents = async (events) => {
         }
     }`
 
-    const result = await queryPoapApi(query)
+    const result = await poapAPI.query(query)
 
     return result.data.events.reduce(function (accumulator, x) {
         return accumulator + parseInt(x.tokenCount)
@@ -76,7 +57,7 @@ const getHoldersWalletOfEvents = async (events) => {
         },
     }`
 
-    const result = await queryPoapApi(query)
+    const result = await poapAPI.query(query)
 
     const wallets = result.data.tokens.map((x) => {
         return x.owner.id
@@ -108,7 +89,7 @@ const getHoldersWalletOfEvent = async (id, saveWallets, retries = 0) => {
             },
     }`
 
-        const result = await queryPoapApi(query)
+        const result = await poapAPI.query(query)
 
         const wallets = result.data.tokens.map((x) => {
             return x.owner.id
