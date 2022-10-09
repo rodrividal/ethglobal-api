@@ -98,7 +98,7 @@ const getMessageById = async (id) => {
 };
 
 const insertMessage = async (message) => {
-    const { response, error } = await supabase
+    const { data, error } = await supabase
         .from('messages')
         .insert([
             message,
@@ -109,11 +109,11 @@ const insertMessage = async (message) => {
         return false
     }
 
-    return response
+    return data
 }
 
 const verifyMessage = async (id) => {
-    const { response, error } = await supabase
+    const { data, error } = await supabase
         .from('messages')
         .update({ verified: true })
         .match({ id: id })
@@ -123,7 +123,7 @@ const verifyMessage = async (id) => {
         return false
     }
 
-    return response
+    return data
 }
 
 const watchedAdExists = async (address, message_id) => {

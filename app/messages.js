@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
 
     const message = await database.insertMessage({ title, description, image_url, link, keyword });
 
-    const { data, error} = await database.getDataUnion(keyword)
+    const { data, error } = await database.getDataUnion(keyword)
 
     const response = {
         address: data.address,
@@ -81,8 +81,19 @@ router.post('/watch', async (req, res) => {
 })
 
 router.get('/test', async (req, res) => {
-    const du = await database.getDataUnion("sillas")
-    res.json(du);
+    const { data, error} = await database.getDataUnion("sillas")
+    console.log(data)
+
+    const title = "title"
+    const description = "ad"
+    const image_url = 'asd'
+    const link = 'asd'
+    const keyword = 'dd'
+
+    const message = await database.insertMessage({ title, description, image_url, link, keyword });
+    console.log(message)
+
+    res.json(data);
 })
 
 module.exports = router
