@@ -27,6 +27,8 @@ router.post('/', async (req, res) => {
 
     console.log(title, description, image_url, link, keyword);
 
+
+
     const response = database.insertMessage({ title, description, image_url, link, keyword });
 
     if (typeof response === "undefined") {
@@ -42,12 +44,14 @@ router.post('/watch', async (req, res) => {
 
     const response = database.insertWatchedAd({ address, message_id });
 
+    const { data } = database.getMessageById(message_id)
+
     if (typeof response === "undefined") {
         res.status(500).json({ message: "error" });
         return;
     }
 
-    res.status(200).json({ message: "ok" });
+    res.status(200).json(data);
 })
 
 module.exports = router

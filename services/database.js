@@ -37,6 +37,10 @@ const getCategories = async () => {
     return { data, error, count };
 };
 
+const categoryExists = async () => {
+
+}
+
 const poapsByKeyword = async (keywords) => {
     const { data, error, count } = await supabase
         .from('poaps')
@@ -66,6 +70,15 @@ const getMessagesByKeywords = async (keywords) => {
         .from('messages')
         .select()
         .filter('keyword', 'in', '(' + keywords.toString() + ')')
+
+    return { data, error, count };
+};
+
+const getMessageById = async (id) => {
+    const { data, error, count } = await supabase
+        .from('messages')
+        .select()
+        .eq('id', id)
 
     return { data, error, count };
 };
@@ -107,6 +120,7 @@ exports.getPoaps = getPoaps;
 exports.getCategories = getCategories;
 exports.poapsByKeyword = poapsByKeyword;
 exports.getMessagesByKeywords = getMessagesByKeywords;
+exports.getMessageById = getMessageById;
 exports.insertDataUnion = insertDataUnion;
 exports.insertMessage = insertMessage;
 exports.insertWatchedAd = insertWatchedAd;
