@@ -1,5 +1,6 @@
 const express = require('express')
 const database = require("../services/database");
+const DU = require("../services/dataunions");
 const { interestsFromAddress } = require("../services/poap_api");
 const router = express.Router()
 
