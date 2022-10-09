@@ -1,4 +1,3 @@
-// import { createClient } from "@supabase/supabase-js";
 const createClient = require('@supabase/supabase-js').createClient;
 
 const databaseUrl = process.env.SUPABASE_URL;
@@ -37,6 +36,25 @@ const getCategories = async () => {
     return { data, error, count };
 };
 
+const getDataUnion = async (keyword) => {
+    const { data, error, count } = await supabase
+        .from('dataunions')
+        .select()
+        .eq('keyword', keyword)
+        .limit(1)
+        .single()
+
+    return { data, error, count };
+};
+
+const categoryExists = async (keyword) => {
+    const { data, error, count } = await supabase
+        .from('dataunions')
+        .select()
+        .eq('keyword', keyword)
+
+    return data.length > 0
+}
 const poapsByKeyword = async (keywords) => {
     const { data, error, count } = await supabase
         .from('poaps')
@@ -127,9 +145,11 @@ exports.signIn = signIn;
 exports.signUp = signUp;
 exports.getPoaps = getPoaps;
 exports.getCategories = getCategories;
+exports.getDataUnion = getDataUnion;
 exports.poapsByKeyword = poapsByKeyword;
 exports.getMessagesByKeywords = getMessagesByKeywords;
 exports.getMessageById = getMessageById;
 exports.insertDataUnion = insertDataUnion;
 exports.insertMessage = insertMessage;
 exports.insertWatchedAd = insertWatchedAd;
+exports.categoryExists = categoryExists;

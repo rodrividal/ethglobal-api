@@ -27,14 +27,28 @@ router.post('/', async (req, res) => {
 
     console.log(title, description, image_url, link, keyword);
 
+    const categoryExists = database.categoryExists(keyword)
+
+    if (!categoryExists) {
+        try {
+            let du = await DU.createDataUnion(keyword, "This is the data union for the following category: " + keyword)
+            await database.insertDataUnion(du.keyword, du.address)
+        } catch (e) {
+            res.status(500).json({ message: "error" });
+            return;
+        }
+    }
+
     const response = database.insertMessage({ title, description, image_url, link, keyword });
+
+    const du = database.getDataUnion(keyword)
 
     if (typeof response === "undefined") {
         res.status(500).json({ message: "error" });
         return;
     }
 
-    res.status(200).json({ message: "ok" });
+    res.status(200).json({ du_adress: du.address });
 })
 
 router.post('/watch', async (req, res) => {
