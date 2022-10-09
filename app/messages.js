@@ -16,7 +16,7 @@ router.use((req, res, next) => {
     next()
 })
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     const { title, description, image_url, link, keyword } = req.body;
 
     const { data, error } = await supabase
