@@ -38,16 +38,11 @@ router.post('/', async (req, res) => {
         }
     }
 
-    const response = await database.insertMessage({ title, description, image_url, link, keyword });
+    await database.insertMessage({ title, description, image_url, link, keyword });
 
     const du = await database.getDataUnion(keyword)
 
-    if (typeof response === "undefined") {
-        res.status(500).json({ message: "error" });
-        return;
-    }
-
-    res.status(200).json({ du_adress: du.address });
+    res.status(200).json({ du_address: du.getAddress() });
 })
 
 router.post('/verify', async (req, res) => {
