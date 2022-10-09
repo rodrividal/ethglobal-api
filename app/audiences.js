@@ -135,6 +135,8 @@ const getHoldersWalletOfEventsAsync = async (events) => {
 }
 
 router.get('/check-volume', async (req, res) => {
+    req.setTimeout(500000);
+
     const q = req.query.q
     const keywords = q.split(';').map((x) => { return x.trim()})
     const { data, error, count } = await database.poapsByKeyword(keywords)
