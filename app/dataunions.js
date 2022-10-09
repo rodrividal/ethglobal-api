@@ -13,8 +13,8 @@ router.use((req, res, next) => {
 router.get('/', async (req, res) => {
     const keyword = req.query.keyword;
 
-    const { data, error} = await getDataUnion(keyword)
-    
+    const { data, error} = await database.getDataUnion(keyword)
+
     res.json(data)
 })
 
