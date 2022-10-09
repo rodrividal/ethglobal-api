@@ -37,7 +37,7 @@ router.post('/', async (req, res) => {
         }
     }
 
-    const response = database.insertMessage({ title, description, image_url, link, keyword });
+    const response = await database.insertMessage({ title, description, image_url, link, keyword });
 
     const du = await database.getDataUnion(keyword)
 
@@ -52,7 +52,7 @@ router.post('/', async (req, res) => {
 router.post('/verify', async (req, res) => {
     const { message_id } = req.body;
 
-    const response = database.verifyMessage(message_id);
+    const response = await database.verifyMessage(message_id);
 
     if (typeof response === "undefined") {
         res.status(500).json({ message: "error" });
@@ -65,7 +65,7 @@ router.post('/verify', async (req, res) => {
 router.post('/watch', async (req, res) => {
     const { address, message_id } = req.body;
 
-    const response = database.insertWatchedAd({ address, message_id });
+    const response = await database.insertWatchedAd({ address, message_id });
 
     const { data, error } = await database.getMessageById(message_id)
 
