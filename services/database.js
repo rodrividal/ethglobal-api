@@ -84,7 +84,7 @@ const getMessagesByKeywords = async (keywords) => {
         .from('messages')
         .select()
         .filter('keyword', 'in', '(' + keywords.toString() + ')')
-        .eq('verify', true)
+        .eq('verified', true)
 
     return { data, error, count };
 };
