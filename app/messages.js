@@ -63,7 +63,7 @@ router.post('/verify', async (req, res) => {
 
     const { data, error } = await database.getDataUnion(message.keyword)
 
-    await DU.refreshRevenue(data.address)
+    // await DU.refreshRevenue(data.address)
 
     res.status(200).json({ message: "ok" });
 })
