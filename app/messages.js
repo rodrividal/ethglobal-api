@@ -25,8 +25,6 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     const { title, description, image_url, link, keyword } = req.body;
 
-    console.log(title, description, image_url, link, keyword);
-
     const categoryExists = database.categoryExists(keyword)
 
     if (!categoryExists) {
@@ -41,7 +39,7 @@ router.post('/', async (req, res) => {
 
     const response = database.insertMessage({ title, description, image_url, link, keyword });
 
-    const du = database.getDataUnion(keyword)
+    const du = await database.getDataUnion(keyword)
 
     if (typeof response === "undefined") {
         res.status(500).json({ message: "error" });
@@ -49,6 +47,19 @@ router.post('/', async (req, res) => {
     }
 
     res.status(200).json({ du_adress: du.address });
+})
+
+router.post('/verify', async (req, res) => {
+    const { message_id } = req.body;
+
+    const response = database.verifyMessage(message_id);
+
+    if (typeof response === "undefined") {
+        res.status(500).json({ message: "error" });
+        return;
+    }
+
+    res.status(200).json({ message: "ok" });
 })
 
 router.post('/watch', async (req, res) => {

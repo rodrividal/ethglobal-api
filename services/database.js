@@ -112,6 +112,20 @@ const insertMessage = async (message) => {
     return response
 }
 
+const verifyMessage = async (id) => {
+    const { response, error } = await supabase
+        .from('messages')
+        .update({ verified: true })
+        .match({ id: id })
+
+    if (error) {
+        console.log(error)
+        return false
+    }
+
+    return response
+}
+
 const watchedAdExists = async (address, message_id) => {
     const { data, error, count } = await supabase
         .from('watched_ads')
@@ -149,6 +163,7 @@ exports.getDataUnion = getDataUnion;
 exports.poapsByKeyword = poapsByKeyword;
 exports.getMessagesByKeywords = getMessagesByKeywords;
 exports.getMessageById = getMessageById;
+exports.verifyMessage = verifyMessage;
 exports.insertDataUnion = insertDataUnion;
 exports.insertMessage = insertMessage;
 exports.insertWatchedAd = insertWatchedAd;
