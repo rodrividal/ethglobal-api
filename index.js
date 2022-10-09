@@ -4,16 +4,21 @@ const express = require("express");
 const cors = require('cors')
 
 const audiences = require('./app/audiences');
+const messages = require('./app/messages');
 const users = require('./app/users');
 const database = require('./app/database');
+const bodyParser = require('body-parser');
 
 const app = express();
 
 app.use(cors())
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use('/users', users);
 app.use('/database-connection', database);
 app.use('/audiences', audiences);
+app.use('/messages', messages);
 
 app.get("/", (req, res) => {
     const endpoints = [
